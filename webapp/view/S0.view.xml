@@ -1,0 +1,71 @@
+<mvc:View controllerName="marcio.cadastro_infracoes.controller.S0"
+	xmlns:custom="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1" xmlns:mvc="sap.ui.core.mvc" displayBlock="true"
+	xmlns="sap.m">
+	<SplitApp id="SplitS0" initialDetail="veiculos" initialMaster="master" orientationChange="onOrientationChange">
+		<masterPages>
+			<Page id="master" title="Cadastros" icon="sap-icon://action" class="sapUiStdPage">
+				<content>
+					<List itemPress="onListItemPress">
+						<items>
+							<StandardListItem title="Cadastro de Veículos" type="Active" custom:to="veiculos"/>
+							<StandardListItem title="Cadastro de Motoristas" type="Active" custom:to="motorista"/>
+							<StandardListItem title="Cadastro de Infração" type="Active" custom:to="infracao"/>
+						</items>
+					</List>
+				</content>
+			</Page>
+		</masterPages>
+		<detailPages>
+			<Page id="motorista" title="Cadastro de Motorista" class="sapUiStdPage" showNavButton="true">
+				<content>
+					<Label text="Nome"/>
+					<Input maxLength="10"/>
+					<Label text="Cep"/>
+					<Input id="cep" maxLength="09"/>
+					<Button text="Busca Cep" id="onCep" press="onCep"/>
+					<Input editable="false" width="100%" id="input0" value="{/logradouro}"/>
+				</content>
+				<content>
+					<Label text="CPF"/>
+					<Input maxLength="11"/>
+				</content>
+			</Page>
+			<Page id="veiculos" title="Cadastro de veículos" class="sapUiStdPage" showNavButton="true">
+				<content>
+					<Label text="Tipo do Veículo"/>
+					<!--<Select selectedKey="{filtro>/tipo}" items="{tipo>/}" change="onChangeTipo">-->
+					<!--	<items>-->
+					<!--<core:Item key="{tipo>codigo}" text="{tipo>nome}"/>-->
+					<!--	</items>-->
+					<!--</Select>-->
+					<Select change="onChangeTipo">
+						<items>
+							
+						</items>
+					</Select>
+					<Label text="Marca"/>
+					<Select change="onChangeMarca">
+						<items>
+							<core:Item xmlns:core="sap.ui.core" text="{/marca}"/>
+						</items>
+					</Select>
+					<Label text="Modelo"/>
+					<Select forceSelection="true" change="onChangeModelo">
+						<items></items>
+					</Select>
+					<Label text="Anos"/>
+					<Select forceSelection="true" change="onChangeAno">
+						<items></items>
+					</Select>
+				</content>
+				<footer>
+					<OverflowToolbar>
+						<content >
+							<Button icon="sap-icon://delete" press="onDelete"/>
+						</content>
+					</OverflowToolbar>
+				</footer>
+			</Page>
+		</detailPages>
+	</SplitApp>
+</mvc:View>
