@@ -6,7 +6,7 @@ sap.ui.define([
 
 	return Controller.extend("marcio.cadastro_infracoes.controller.S0", {
 		onInit: function () {
-			var sURL = "/viacep/01001000/json/";
+			var sURL = "/viacep/json/";
 			var oModelo = new sap.ui.model.json.JSONModel(sURL);
 
 			this.getView().setModel(oModelo);
@@ -15,50 +15,94 @@ sap.ui.define([
 				termoBusca: ""
 			});
 			this.getView().setModel(oViewModel, "view");
-			//
+
 			this._oFiltroModel = new JSONModel({
 				tipo: "",
 				marca: "",
 				modelo: "",
 				ano: ""
-					// ano: 2018
 			});
 			this.getView().setModel(this._oFiltroModel, "filtro");
 
 			this._oTipoModel = new JSONModel([{
-				codigo: "",
+				id: "",
 				nome: ""
 			}, {
-				codigo: "carros",
+				id: "carros",
 				nome: "Carros"
 			}, {
-				codigo: "motos",
+				id: "motos",
 				nome: "Motos"
 			}, {
-				codigo: "caminhoes",
+				id: "caminhoes",
 				nome: "Caminhões"
 			}]);
+
 			this.getView().setModel(this._oTipoModel, "tipo");
 
 			this._oMarcaModel = new JSONModel();
 			this.getView().setModel(this._oMarcaModel, "marca");
+			window._marcaModel = this._oMarcaModel;
 
 			this._oModeloModel = new JSONModel();
 			this.getView().setModel(this._oModeloModel, "modelo");
-
-			this._oAnosModel = new JSONModel();
-			this.getView().setModel(this._oAnosModel, "anos");
+			window._oModeloModel = this._oModeloModel;
 
 			this._oVeiculosModel = new JSONModel([]);
 			this.getView().setModel(this._oVeiculosModel, "veiculos");
+			window._oVeiculosModel = this._oVeiculosModel;
+			// Inicio Cargo
+			this._oCargoModel = new JSONModel({
+				cargo: ""
+			});
+			this.getView().setModel(this._oFiltroModel, "cargo");
 
-			//
+			this._oTipoCargo = new JSONModel([{
+				id: "",
+				cargo: ""
+			}, {
+				id: "1",
+				cargo: "Motorista"
+			}, {
+				id: "2",
+				cargo: "Gerente"
+			}, {
+				id: "3",
+				cargo: "Terceiro"
+			}]);
+
+			this.getView().setModel(this._oTipoCargo, "cargo");
+			// Fim Cargo
+
+			//interno/externo
+			this._oLocalModel = new JSONModel({
+				local: ""
+			});
+			this.getView().setModel(this._oLocalModel, "local");
+
+			this._oTipoLocal = new JSONModel([{
+				id: "",
+				local: ""
+			}, {
+				id: "1",
+				local: "Interno"
+			}, {
+				id: "2",
+				local: "Externo"
+			}, {
+				id: "3",
+				local: "Terceiro"
+			}]);
+			this.getView().setModel(this._oTipoLocal, "local");
+
+			//Fim interno/externo
 		},
 		//
 		onChangeTipo: function (oEvent) {
 			var sTipo = this._oFiltroModel.getProperty("/tipo");
 			if (sTipo) {
-				this._oMarcaModel.loadData("/api/" + sTipo + "/marcas");
+				var sApi = "https://parallelum.com.br/fipe/api/v1/" + sTipo + "/marcas"
+				this._oMarcaModel.loadData(sApi);
 
 			} else {
 				this._oMarcaModel.setProperty("/", []);
@@ -69,9 +113,9 @@ sap.ui.define([
 		onChangeMarca: function (oEvent) {
 			var sTipo = this._oFiltroModel.getProperty("/tipo");
 			var sMarca = this._oFiltroModel.getProperty("/marca");
-
+			var sApi = "https://parallelum.com.br/fipe/api/v1/" + sTipo + "/marcas/" + sMarca + "/modelos"
 			if (sTipo && sMarca) {
-				this._oModeloModel.loadData("/api/" + sTipo + "/marcas/" + sMarca + "/modelos");
+				this._oModeloModel.loadData("https://parallelum.com.br/fipe/api/v1/" + sTipo + "/marcas/" + sMarca + "/modelos");
 			}
 		},
 
@@ -84,7 +128,7 @@ sap.ui.define([
 				this._oAnosModel.loadData("/api/" + sTipo + "/marcas/" + sMarca + "/modelos/" + sModelo + "/anos");
 			}
 		},
-		//
+
 		onListItemPress: function (oEvent) {
 			var sToPageId = oEvent.getParameter("listItem").getCustomData()[0].getValue();
 			this.getSplitAppObj().toDetail(this.createId(sToPageId));
@@ -99,6 +143,10 @@ sap.ui.define([
 			var sCep = this.getView().byId("cep").getValue();
 			var sUrl = "/viacep/" + sCep + "/json/";
 			this.getView().getModel().loadData(sUrl);
+		},
+		onValue: function (oEvent) {
+			var sValue = this.getView().byId("valor").getValue();
+		
 		}
 
 	});

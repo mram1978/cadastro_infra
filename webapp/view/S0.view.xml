@@ -1,6 +1,6 @@
 <mvc:View controllerName="marcio.cadastro_infracoes.controller.S0"
 	xmlns:custom="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1" xmlns:mvc="sap.ui.core.mvc" displayBlock="true"
-	xmlns="sap.m">
+	xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:u="sap.ui.unified">
 	<SplitApp id="SplitS0" initialDetail="veiculos" initialMaster="master" orientationChange="onOrientationChange">
 		<masterPages>
 			<Page id="master" title="Cadastros" icon="sap-icon://action" class="sapUiStdPage">
@@ -19,44 +19,77 @@
 			<Page id="motorista" title="Cadastro de Motorista" class="sapUiStdPage" showNavButton="true">
 				<content>
 					<Label text="Nome"/>
-					<Input maxLength="10"/>
-					<Label text="Cep"/>
-					<Input id="cep" maxLength="09"/>
-					<Button text="Busca Cep" id="onCep" press="onCep"/>
-					<Input editable="false" width="100%" id="input0" value="{/logradouro}"/>
-				</content>
-				<content>
-					<Label text="CPF"/>
-					<Input maxLength="11"/>
+					<Input width="75%" value="{/motorista}"/>
+					<Label width="100%"/>
+					<Label text="CPF" width="4%"/>
+					<Input maxLength="11" width="11%"/>
+					<Label width="5%"/>
+					<Label text="ID" width="2%"/>
+					<Input maxLength="15" width="15%"/>
+					<Label width="5%"/>
+					<Label text="CNH" width="4%"/>
+					<Input maxLength="15" width="15%"/>
+					<Label width="100%"/>
+					<Label text="Cep" width="4%"/>
+					<Input id="cep" maxLength="09" width="35%" type="Number"/>
+					<Label width="3%"/>
+					<Button text="Busca Cep" id="onCep" press="onCep" width="35%"/>
+					<Label width="100%"/>
+					<Label text="Endereço" width="7%"/>
+					<Input editable="false" width="75%" id="end" value="{/logradouro}"/>
+					<Label width="2%"/>
+					<Label text="Nº" width="2%"/>
+					<Input width="5%" id="num"/>
+					<Label width="100%"/>
+					<Label text="UF" width="3%"/>
+					<Input editable="false" width="10%" id="uf" value="{/uf}"/>
+					<Label width="2%"/>
+					<Label text="Bairro" width="5%"/>
+					<Input editable="false" width="25%" id="bairro" value="{/bairro}"/>
+					<Label width="1%"/>
+					<Label text="Cidade" width="6%"/>
+					<Input editable="false" width="25%" id="city" value="{/localidade}"/>
+					<Label width="100%"/>
+					<Label text="Cargo" width="5%"/>
+					<Select forceSelection="true" selectedKey="{cargo>/cargo}" items="{cargo>/}">
+						<items>
+							<core:Item key="{cargo>id}" text="{cargo>cargo}"/>
+						</items>
+					</Select>
+					<Label width="10%"/>
+					<Label text="Interno\Externo" width="10%"/>
+					<Select forceSelection="true" selectedKey="{local>/local}" items="{local>/}">
+						<items>
+							<core:Item key="{local>id}" text="{local>local}"/>
+						</items>
+					</Select>
 				</content>
 			</Page>
 			<Page id="veiculos" title="Cadastro de veículos" class="sapUiStdPage" showNavButton="true">
 				<content>
-					<Label text="Tipo do Veículo"/>
-					<!--<Select selectedKey="{filtro>/tipo}" items="{tipo>/}" change="onChangeTipo">-->
-					<!--	<items>-->
-					<!--<core:Item key="{tipo>codigo}" text="{tipo>nome}"/>-->
-					<!--	</items>-->
-					<!--</Select>-->
-					<Select change="onChangeTipo">
+					<Label text="Tipo do Veículo" width="10%"/>
+					<Select forceSelection="true" selectedKey="{filtro>/tipo}" items="{tipo>/}" change="onChangeTipo">
 						<items>
-							
+							<core:Item key="{tipo>id}" text="{tipo>nome}"/>
 						</items>
 					</Select>
-					<Label text="Marca"/>
-					<Select change="onChangeMarca">
+					<Label width="100%"/>
+					<Label text="Marca" width="5%"/>
+					<Select forceSelection="true" selectedKey="{filtro>/marca}" items="{marca>/}" change="onChangeMarca">
 						<items>
-							<core:Item xmlns:core="sap.ui.core" text="{/marca}"/>
+							<core:Item key="{marca>codigo}" text="{marca>nome}"/>
 						</items>
 					</Select>
-					<Label text="Modelo"/>
-					<Select forceSelection="true" change="onChangeModelo">
-						<items></items>
+					<Label width="100%"/>
+					<Label text="Modelo" width="5%"/>
+					<Select forceSelection="true" selectedKey="{filtro>/modelo}" items="{modelo>/modelos}" change="onChangeModelo">
+						<items>
+							<core:Item key="{modelo>codigo}" text="{modelo>nome}"/>
+						</items>
 					</Select>
-					<Label text="Anos"/>
-					<Select forceSelection="true" change="onChangeAno">
-						<items></items>
-					</Select>
+					<Label width="100%"/>
+					<Label text="Placa" width="5%"/>
+					<Input maxLength="11" width="11%" value="{/placa}"/>
 				</content>
 				<footer>
 					<OverflowToolbar>
@@ -66,6 +99,39 @@
 					</OverflowToolbar>
 				</footer>
 			</Page>
+			<Page id="infracao" title="Cadastro de Infrações" class="sapUiStdPage" showNavButton="true">
+				<Label text="Auto de Infração" width="11%"/>
+				<Select forceSelection="true">
+					<items></items>
+				</Select>
+				<Label width="5%"/>
+				<Label text="Placa" width="5%"/>
+				<Input maxLength="11" width="11%" value="{/placa}"/>
+				<Label width="5%"/>
+				<Label text="Local" width="5%"/>
+				<Input id="local" width="30%"/>
+				<Label width="100%"/>
+				<Label text="Infrator" width="5%"/>
+				<Input id="infrator" value="{/motorista}" width="40%"/>
+				<Label width="5%"/>
+				<Label text="Cód. Infra" width="7%"/>
+				<Input id="cdinfra" width="8%"/>
+				<Label width="2%"/>
+				<Label text="Motivo" width="5%"/>
+				<Input id="motivo" width="10%"/>
+				<Label width="100%"/>
+				<Label text="Data/Hora da Infração" width="14%"/>
+				<DateTimePicker id="DTP3" displayFormat="short" change="handleChange" class="sapUiSmallMarginBottom" width="20%"/>
+				<Label width="2%"/>
+				<Label text="Data Retorno" width="12%"/>
+				<DatePicker id="DP3" displayFormat="short" change="handleChange" class="sapUiSmallMarginBottom" width="20%"/>
+				<Label width="100%"/>
+				<Label text="Valor Multa" width="8%"/>
+				<Input id="valor" width="10%" change="onValue"/>
+				<Label width="2%"/>
+				<Label text="Valor com Desconto" width="13%"/>
+				<Input id="valor_desc" width="10%"/>
+				</Page>
 		</detailPages>
 	</SplitApp>
 </mvc:View>
