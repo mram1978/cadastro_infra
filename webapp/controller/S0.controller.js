@@ -1,7 +1,8 @@
 sap.ui.define([
 	"sap/ui/core/mvc/Controller",
-	"sap/ui/model/json/JSONModel"
-], function (Controller, JSONModel) {
+	"sap/ui/model/json/JSONModel",
+	'sap/m/MessageToast'
+], function (Controller, JSONModel,MessageToast) {
 	"use strict";
 
 	return Controller.extend("marcio.cadastro_infracoes.controller.S0", {
@@ -146,7 +147,27 @@ sap.ui.define([
 		},
 		onValue: function (oEvent) {
 			var sValue = this.getView().byId("valor").getValue();
-		
+
+		},
+		handleUploadComplete: function (oEvent) {
+			var sResponse = oEvent.getParameter("response");
+			if (sResponse) {
+				var sMsg = "";
+				var m = /^\[(\d\d\d)\]:(.*)$/.exec(sResponse);
+				if (m[1] == "200") {
+					sMsg = "Return Code: " + m[1] + "\n" + m[2] + "(Upload Success)";
+					oEvent.getSource().setValue("");
+				} else {
+					sMsg = "Return Code: " + m[1] + "\n" + m[2] + "(Upload Error)";
+				}
+
+				MessageToast.show(sMsg);
+			}
+		},
+
+		handleUploadPress: function (oEvent) {
+			var oFileUploader = this.byId("fileUploader");
+			oFileUploader.upload();
 		}
 
 	});
